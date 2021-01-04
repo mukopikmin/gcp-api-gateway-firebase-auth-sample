@@ -1,0 +1,83 @@
+swagger: "2.0"
+info:
+  title: GCP API Gateway Firebase Authentication sample
+  version: 1.0.0
+  description: ""
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+paths:
+  /mirror:
+    options:
+      operationId: optionsRoot
+      responses:
+        200:
+          description: ok
+    get:
+      operationId: getRoot
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Get root"
+          headers:
+            X-TEST=HEADER:
+              type: string
+      security:
+        - firebase: []
+  /protected:
+    options:
+      operationId: optionsProtectedContents
+      responses:
+        200:
+          description: ok
+    get:
+      operationId: getProtectedContents
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Get protected contents"
+          schema:
+            $ref: "#/definitions/Books"
+      security:
+        - firebase: []
+  /unprotected:
+    options:
+      operationId: optionsUnprotectedContents
+      responses:
+        200:
+          description: ok
+    get:
+      operationId: getUnprotectedContents
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Get unprotected contents"
+          schema:
+            $ref: "#/definitions/Books"
+definitions:
+  Book:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      description:
+        type: string
+  Books:
+    type: array
+    items:
+      $ref: "#/definitions/Book"
+securityDefinitions:
+  firebase:
+    authorizationUrl: REPLACE_WITH_APP_URL
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://securetoken.google.com/REPLACE_WITH_PROJECT_ID"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "REPLACE_WITH_PROJECT_ID"
+x-google-backend:
+  address: REPLACE_WITH_APP_URL
