@@ -20,9 +20,6 @@ paths:
       responses:
         200:
           description: "Get root"
-          headers:
-            X-TEST=HEADER:
-              type: string
       security:
         - firebase: []
   /protected:
